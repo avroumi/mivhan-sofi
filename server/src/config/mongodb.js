@@ -13,9 +13,10 @@ export const connectDb = async () => {
   return db;
 };
 
-export const getDb = () => {
+export const getDb = async () => {
+  await connectDb();
   if (!db) {
-    throw new AppError("Db not fond");
+    throw new AppError("Db not fond", 500);
   }
   return db;
 };

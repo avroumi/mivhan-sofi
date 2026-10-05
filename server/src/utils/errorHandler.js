@@ -1,3 +1,6 @@
+import { success } from "zod";
+import { AppError } from "./AppError.js";
+
 export const errorHandler = (error, req, res, next) => {
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
@@ -10,6 +13,13 @@ export const errorHandler = (error, req, res, next) => {
     return res.status(400).json({
       success: false,
       message: error.issues?.[0]?.message || "Validation error",
+    });
+  }
+
+  if (error.name === "BSONError") {
+    return res.status(400).json({
+      success: false,
+      message: error.message,
     });
   }
 

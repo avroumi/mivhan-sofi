@@ -1,6 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
-import type { MapAlert, UpdateMapAlert, ResponseMap } from "../types/MapTypes";
+import type {
+  MapAlert,
+  UpdateMapAlert,
+  ResponseMap,
+  createMapAlert,
+} from "../types/MapTypes";
 import { apiRequest } from "../utils/apiRequest";
 import useAlertStore from "../store/useAlertStore";
 
@@ -65,12 +70,12 @@ const useALertApi = () => {
     }
   };
 
-  const add = async (data: MapAlert) => {
+  const createAlert = async (data: createMapAlert) => {
     try {
       setLoading(true);
       setError(null);
 
-      const result = await apiRequest<ResponseMap, MapAlert>({
+      const result = await apiRequest<ResponseMap, createMapAlert>({
         method: "POST",
         url: "http://localhost:3001/api/alerts",
         data,
@@ -123,6 +128,7 @@ const useALertApi = () => {
       setUpdateAlerts(id, data);
       return result;
     } catch (error) {
+      console.log(axios.AxiosError);
       setError(getErrorMessage(error, "Update failed"));
 
       throw error;
@@ -132,7 +138,7 @@ const useALertApi = () => {
   };
 
   return {
-    add,
+    createAlert,
     deleteAlert,
     getAllData,
     update,

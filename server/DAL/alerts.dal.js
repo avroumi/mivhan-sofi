@@ -1,7 +1,7 @@
 import { getDb } from "../src/config/mongodb.js";
-import { ObjectId, ReturnDocument } from "mongodb";
+import { ObjectId } from "mongodb";
 
-const db = getDb();
+const db = await getDb();
 const alertsCollection = db.collection("alerts");
 
 export const getAllAlerts = async () => {
@@ -18,7 +18,7 @@ export const createALert = async (data) => {
 };
 
 export const deleteAlert = async (alertId) => {
-  return await alertsCollection.findOneAndDelete({
+  return await alertsCollection.deleteOne({
     _id: new ObjectId(alertId),
   });
 };
@@ -27,7 +27,7 @@ export const updateALert = (alertId, data) => {
   const updatedAlert = alertsCollection.findOneAndUpdate(
     { _id: new ObjectId(alertId) },
     { $set: data },
-    { ReturnDocument: "after" },
+    { returnDocument: "after" },
   );
   return updatedAlert;
 };

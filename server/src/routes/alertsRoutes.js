@@ -11,7 +11,7 @@ import {
   updateAlertController,
   createAlertController,
   deleteAlertController,
-} from "../controllers/alertsControllers";
+} from "../controllers/alertsControllers.js";
 
 const router = Router();
 
@@ -27,12 +27,13 @@ router.post(
   createAlertController,
 );
 router.delete(
-  "/alerts",
+  "/alerts/:id",
   validateMiddleware(ValidId, "params"),
   deleteAlertController,
 );
+
 router.put(
-  "/alerts",
+  "/alerts/:id",
   validateMiddleware(ValidId, "params"),
   validateMiddleware(ValidUpdateAlert),
   updateAlertController,

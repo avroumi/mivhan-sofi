@@ -10,7 +10,6 @@ export interface MapAlert {
 }
 
 export interface UpdateMapAlert {
- 
   description?: string;
   arena?: string;
   displayName?: string;
@@ -35,8 +34,8 @@ export interface createMapAlert {
   description: string;
   arena: string;
   displayName: string;
-  priority: string; // בדרך כלל Low, Medium, High או Critical
-  lon: number; // קו אורך (longitude)
-  lat: number; // קו רוחב (latitude)
+  priority: string;
   status: string;
+  lon: number;
+  lat: number;
 }
