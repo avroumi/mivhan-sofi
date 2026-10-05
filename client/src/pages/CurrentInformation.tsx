@@ -1,4 +1,3 @@
-import useAlertStore from "../store/useAlertStore";
 import { useEffect, useState } from "react";
 import useALertApi from "../hook/useAlertApi";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
@@ -49,6 +48,7 @@ const CurrentInformation = () => {
     getById();
   }, []);
 
+  
   return (
     <div>
       {loading && <p>Loading ...</p>}

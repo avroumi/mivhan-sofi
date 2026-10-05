@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 import useALertApi from "../hook/useAlertApi";
 import { useNavigate } from "react-router-dom";
 import type { createMapAlert } from "../types/MapTypes";
+import type { AlertPriority } from "../components/AlertsMap";
 
 const InformationsPage = () => {
-  const [search, setSearch] = useState("");
-  const setDelete = useAlertStore((state) => state.delete);
-  const add = useAlertStore((state) => state.add);
-  const update = useAlertStore((state) => state.update);
+  const [search, setSearch] = useState<AlertPriority | string>("");
   const alerts = useAlertStore((state) => state.alerts);
 
   const [description, setDescription] = useState("");
@@ -33,7 +31,7 @@ const InformationsPage = () => {
   }, []);
 
   const filteredAlerts = alerts.filter((alert) =>
-    alert.displayName.includes(search),
+    alert.priority.toLowerCase().includes(search.toLowerCase()),
   );
 
   const handleCreate = async (data: createMapAlert) => {
@@ -58,6 +56,18 @@ const InformationsPage = () => {
       <p>Here you can add alert and see information</p>
 
       <p>For delete and update click to see more</p>
+
+      <article
+        className="search"
+        style={{ display: "flex", gap: "12px", padding: "12px" }}
+      >
+        <label>Search by priority</label>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </article>
 
       <button onClick={() => setAddButton((prev) => !prev)}>
         {addButton === false ? "Add a alert" : "Close Add"}
@@ -149,8 +159,8 @@ const InformationsPage = () => {
 
       <div className="informations-alert">
         {filteredAlerts.map((alert) => (
-          <div>
-            <article key={alert._id}>
+          <div key={alert._id} className="div-card">
+            <article className="alert-card">
               <p>name: {alert.displayName}</p>
               <p>Description: {alert.description}</p>
               <p>Priority: {alert.priority}</p>
