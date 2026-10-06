@@ -20,6 +20,7 @@ export const authMiddelware = (req, res, next) => {
       id: decoded.id,
       role: decoded.role,
     };
+
     next();
   } catch (error) {
     next(error);

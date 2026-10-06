@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const ValidCreateUser = z.object({
+export const ValidRegister = z.object({
   username: z.string(),
   password: z.string(),
   email: z.email(),
@@ -10,4 +10,9 @@ export const ValidCreateUser = z.object({
 
 export const ValidUserId = z.object({
   id: z.string(),
+});
+
+export const ValidLogin = z.object({
+  password: z.string(),
+  email: z.email(),
 });

@@ -4,11 +4,13 @@ import useAlertStore from "../store/useAlertStore";
 import AlertsMap from "../components/AlertsMap";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import authStore from "../store/useUserStore";
 
 const HomePage = () => {
   const { loading, error, getAllData } = useALertApi();
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const user = authStore((state) => state.user);
 
   const alerts = useAlertStore((state) => state.alerts);
 
@@ -19,9 +21,16 @@ const HomePage = () => {
     getAll();
   }, []);
 
-  const filteredAlerts = alerts.filter((alert) =>
-    alert.displayName.includes(search),
-  );
+  const filteredAlerts =
+    user?.role === "arena_user" && user?.assignedArea !== "All"
+      ? alerts
+          .filter((alert) =>
+            alert.priority.toLowerCase().includes(search.toLowerCase()),
+          )
+          .filter((alert) => alert.arena === user?.assignedArea)
+      : alerts.filter((alert) =>
+          alert.displayName.toLowerCase().includes(search.toLowerCase()),
+        );
   return (
     <div>
       {loading && <p>Loading..</p>}

@@ -4,6 +4,7 @@ import useALertApi from "../hook/useAlertApi";
 import { useNavigate } from "react-router-dom";
 import type { createMapAlert } from "../types/MapTypes";
 import type { AlertPriority } from "../components/AlertsMap";
+import authStore from "../store/useUserStore";
 
 const InformationsPage = () => {
   const [search, setSearch] = useState<AlertPriority | string>("");
@@ -14,8 +15,10 @@ const InformationsPage = () => {
   const [priority, setPriority] = useState("Low");
   const [arena, setArena] = useState("North");
   const [status, setStatus] = useState("Active");
-  const [lon, setLon] = useState<number | null>(null);
-  const [lat, setLat] = useState<number | null>(null);
+  const [lon, setLon] = useState<number>(0);
+  const [lat, setLat] = useState<number>(0);
+
+  const user = authStore((state) => state.user);
 
   const { loading, error, getAllData, createAlert } = useALertApi();
 
@@ -30,9 +33,16 @@ const InformationsPage = () => {
     getAll();
   }, []);
 
-  const filteredAlerts = alerts.filter((alert) =>
-    alert.priority.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filteredAlerts =
+    user?.role === "arena_user" && user?.assignedArea !== "All"
+      ? alerts
+          .filter((alert) =>
+            alert.priority.toLowerCase().includes(search.toLowerCase()),
+          )
+          .filter((alert) => alert.arena === user?.assignedArea)
+      : alerts.filter((alert) =>
+          alert.priority.toLowerCase().includes(search.toLowerCase()),
+        );
 
   const handleCreate = async (data: createMapAlert) => {
     await createAlert(data);
@@ -121,12 +131,26 @@ const InformationsPage = () => {
               <option value="Critical">Critical</option>
             </select>
 
-            <label>Arena</label>
-            <select value={arena} onChange={(e) => setArena(e.target.value)}>
-              <option value="North">North</option>
-              <option value="South">South</option>
-              <option value="Center">Center</option>
-            </select>
+            {user?.assignedArea !== "All" && user?.role === "arena_user" && (
+              <input
+                type="text"
+                value={user.assignedArea}
+                onChange={() => setArena(user.assignedArea)}
+              />
+            )}
+
+            {user?.assignedArea === "All" ||
+              (user?.role !== "arena_user" && (
+                <select
+                  value={arena}
+                  onChange={(e) => setArena(e.target.value)}
+                >
+                  <label>Arena</label>
+                  <option value="North">North</option>
+                  <option value="South">South</option>
+                  <option value="Center">Center</option>
+                </select>
+              ))}
 
             <label>Status</label>
             <select value={status} onChange={(e) => setStatus(e.target.value)}>

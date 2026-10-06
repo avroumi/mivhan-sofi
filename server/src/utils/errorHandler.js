@@ -1,4 +1,3 @@
-import { success } from "zod";
 import { AppError } from "./AppError.js";
 
 export const errorHandler = (error, req, res, next) => {
@@ -20,6 +19,13 @@ export const errorHandler = (error, req, res, next) => {
     return res.status(400).json({
       success: false,
       message: error.message,
+    });
+  }
+
+  if (error.name === "JsonWebTokenError") {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid token",
     });
   }
 

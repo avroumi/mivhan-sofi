@@ -3,31 +3,31 @@ export interface MapAlert {
   description: string;
   arena: string;
   displayName: string;
-  priority: string; // בדרך כלל Low, Medium, High או Critical
+  priority: string;
   status: string;
-  lon: number; // קו אורך (longitude)
-  lat: number; // קו רוחב (latitude)
+  lon: number;
+  lat: number;
 }
 
 export interface UpdateMapAlert {
   description?: string;
   arena?: string;
   displayName?: string;
-  priority?: string; // בדרך כלל Low, Medium, High או Critical
-  lon?: number; // קו אורך (longitude)
+  priority?: string;
+  lon?: number;
   lat?: number;
   status?: string;
 }
 
 export interface AlertsMapProps {
   alerts: MapAlert[];
-  height?: number | string; // ברירת מחדל: 520. למפה חייב להיות גובה מוגדר
+  height?: number | string;
   className?: string;
 }
 
 export interface ResponseMap {
   success: boolean;
-  data: MapAlert | MapAlert[];
+  data: MapAlert;
 }
 
 export interface createMapAlert {

@@ -6,6 +6,7 @@ import { connectDb } from "./src/config/mongodb.js";
 import { AppError } from "./src/utils/AppError.js";
 import { errorHandler } from "./src/utils/errorHandler.js";
 import alertsRouter from "./src/routes/alertsRoutes.js";
+import userRouter from "./src/routes/userRoutes.js";
 
 const PORT = process.env.PORT || 3001;
 
@@ -19,6 +20,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api", alertsRouter);
+app.use("/api/auth", userRouter);
 
 app.use(errorHandler);
 

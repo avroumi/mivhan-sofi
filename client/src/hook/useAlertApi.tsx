@@ -1,13 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import type {
-  MapAlert,
   UpdateMapAlert,
   ResponseMap,
   createMapAlert,
 } from "../types/MapTypes";
 import { apiRequest } from "../utils/apiRequest";
 import useAlertStore from "../store/useAlertStore";
+import authStore from "../store/useUserStore";
 
 const getErrorMessage = (error: unknown, defaultMessage: string) => {
   if (axios.isAxiosError(error)) {
@@ -22,22 +22,22 @@ const useALertApi = () => {
 
   const [error, setError] = useState<string | null>(null);
 
-  const alerts = useAlertStore((state) => state.alerts);
   const setAlerts = useAlertStore((state) => state.setAlerts);
   const setAddAlerts = useAlertStore((state) => state.add);
   const setUpdateAlerts = useAlertStore((state) => state.update);
   const setDeleteAlerts = useAlertStore((state) => state.delete);
+  const token = authStore((state) => state.token);
 
   const getAllData = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const result = await apiRequest<ResponseMap>({
+      const result = await apiRequest<ResponseMap[]>({
         method: "GET",
         url: "http://localhost:3001/api/alerts",
+        token,
       });
-
       setAlerts(result.data);
 
       return result;
@@ -58,6 +58,7 @@ const useALertApi = () => {
       const result = await apiRequest<ResponseMap>({
         method: "GET",
         url: `http://localhost:3001/api/alerts/${id}`,
+        token,
       });
 
       return result;
@@ -79,6 +80,7 @@ const useALertApi = () => {
         method: "POST",
         url: "http://localhost:3001/api/alerts",
         data,
+        token,
       });
 
       setAddAlerts(result.data);
@@ -101,6 +103,7 @@ const useALertApi = () => {
       const result = await apiRequest<ResponseMap>({
         method: "DELETE",
         url: `http://localhost:3001/api/alerts/${id}`,
+        token,
       });
 
       setDeleteAlerts(id);
@@ -123,6 +126,7 @@ const useALertApi = () => {
         method: "PUT",
         url: `http://localhost:3001/api/alerts/${id}`,
         data,
+        token,
       });
 
       setUpdateAlerts(id, data);

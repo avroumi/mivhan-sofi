@@ -9,23 +9,22 @@
 }
 
 .header{
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-  padding: 12px;
-  
-  width: 100%;
+   display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: rgb(61, 63, 65);
+  padding: 10px
  
  
  
 }
 
 .navbar{
-   display: flex;
-  flex-direction: row;
-  gap: 12px;
-  padding: 12px;
-  align-self: center;
+  display: grid;
+  grid-template-columns: repeat(2,  1fr);
+  grid-column-end: auto;
+  padding: 10px
+  
+
   
 }
 
@@ -35,3 +34,14 @@ footer {
 }
 
 
+.div-card{
+  border: solid 2px black;
+  
+  border-radius: 3px;
+  padding: 4px;
+  margin: 10px;
+}
+.alert-card p{
+  border-bottom: solid 1px black;
+  margin-bottom: 2px;
+}

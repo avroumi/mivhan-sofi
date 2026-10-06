@@ -6,26 +6,25 @@ interface ApiRequestOptions<Body> {
   method: Method;
   url: string;
   data?: Body;
+  token?: string;
 }
 
 export const apiRequest = async <Response, Body = unknown>({
   method,
   url,
   data,
+  token,
 }: ApiRequestOptions<Body>): Promise<Response> => {
   const response = await axios.request<Response>({
     method,
     url,
     data,
+    headers: token
+      ? {
+          Authorization: `Bearer ${token}`,
+        }
+      : undefined,
   });
 
   return response.data;
 };
-
-//  "displayName": "avroumi",
-//   "description": "warning ",
-//   "priority": "Low",
-//   "arena":"South",
-//   "status": "Active",
-//   "lon": 35.5786,
-//   "lat":33.2806
