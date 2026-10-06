@@ -7,7 +7,11 @@ const Headers = () => {
   const navigate = useNavigate();
   return (
     <header className="header">
-      <h1>Logo</h1>
+      <div>
+        <h1>welcome back {user?.username}</h1>
+        <p>Role: {user?.role}</p>
+      </div>
+
       <div className="navbar">
         <Link to={"/"}>Home</Link>
         <Link to="/informations">Informations</Link>
