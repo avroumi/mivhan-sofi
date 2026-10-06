@@ -1,5 +1,5 @@
 import useAlertStore from "../store/useAlertStore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useALertApi from "../hook/useAlertApi";
 import { useNavigate } from "react-router-dom";
 import type { createMapAlert } from "../types/MapTypes";
@@ -17,6 +17,8 @@ const InformationsPage = () => {
   const [status, setStatus] = useState("Active");
   const [lon, setLon] = useState<number>(0);
   const [lat, setLat] = useState<number>(0);
+
+  const [alertGeneral, setALertGeneral] = useState<boolean>(false);
 
   const user = authStore((state) => state.user);
 
@@ -45,13 +47,34 @@ const InformationsPage = () => {
         );
 
   const handleCreate = async (data: createMapAlert) => {
-    await createAlert(data);
+    // const hour = Number(new Date()) - 60 * 60 * 1000;
+
+    // const [critique, setCritique] = useState([]);
+    const result = await createAlert(data);
+
     if (error) {
       return <p>{error}</p>;
+    }
+    // if (result.data.priority === "Critical") {
+      // setCritique((prev) => ({...prev, Number(new Date())})); don't work from mistycal reason
+    // }
+    // let critical = 0;
+    // for (const date of critique) {
+    //   console.log(critique); // don't time to fix hit
+    //   if (date >= hour) {
+    //     critical++;
+    //     if (critical >= 3) {
+    //       setALertGeneral((prev) => !prev);
+    //     }
+    //   }
     }
     await getAllData();
   };
 
+  // const element = useRef(alertGeneral);
+  // useEffect(() => {
+  //   element.current.focus()
+  // }, [])
   return (
     <div
       className="informations"
@@ -62,6 +85,15 @@ const InformationsPage = () => {
         flexDirection: "column",
       }}
     >
+      {/* /* {alertGeneral && (
+        <div>
+          <h1>ALLERTTTTT FLYDUBAI INCOMMING</h1>
+          <button onClick={() => setALertGeneral((prev) => !prev)}>
+            Evanti
+          </button>
+        </div>
+      )} */ }
+
       <h1>Informations pages</h1>
       <p>Here you can add alert and see information</p>
 

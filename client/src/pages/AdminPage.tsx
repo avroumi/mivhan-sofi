@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import useUserApi from "../hook/useUserApi";
 import type { Register, User } from "../types/UsersTypes";
+import authStore from "../store/useUserStore";
+import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const [email, setEmail] = useState("");
@@ -16,6 +18,8 @@ const AdminPage = () => {
 
   const [users, setUsers] = useState<User[] | null>(null);
 
+  const navigate = useNavigate();
+
   const [add, setAdd] = useState<boolean>(false);
 
   const { loading, error, registerUser, getAllUser, deleteUser } = useUserApi();
@@ -27,6 +31,7 @@ const AdminPage = () => {
   const handleDelete = async (userId: string) => {
     await deleteUser(userId);
   };
+  const user = authStore((state) => state.user);
 
   useEffect(() => {
     const getAllUsers = async () => {
@@ -35,6 +40,10 @@ const AdminPage = () => {
     };
     getAllUsers();
   }, []);
+
+  if (user.role !== "admin") {
+    navigate("/login");
+  }
   return (
     <div
       className="register-page"
@@ -121,9 +130,7 @@ const AdminPage = () => {
             <p>Role: {userP.user.role}</p>
             <br />
 
-            <button onClick={() => handleDelete(userP.user.id)}>
-              Delete {userP.user.id}
-            </button>
+            <button onClick={() => handleDelete(userP.user.id)}>Delete</button>
           </article>
         ))}
 

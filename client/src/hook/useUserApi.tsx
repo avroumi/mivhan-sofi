@@ -73,7 +73,7 @@ const useUserApi = () => {
       setLoading(true);
       setError(null);
 
-      const result = await apiRequest<ResponseLoginRegister[]>({
+      const result = await apiRequest<unknown>({
         method: "GET",
         url: "http://localhost:3001/api/auth/users",
         token,

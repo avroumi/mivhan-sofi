@@ -21,6 +21,8 @@ const CurrentInformation = () => {
   const [lon, setLon] = useState(alert?.lon);
   const [lat, setLat] = useState(alert?.lat);
 
+  
+
   const handleDelete = async (id: string) => {
     await deleteAlert(id);
     if (!error) {
